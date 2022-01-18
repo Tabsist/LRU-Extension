@@ -1,0 +1,23 @@
+{
+  "name": "LRU App",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "LRU Tab manager",
+  "background":
+  {
+    "scripts":["./background.js"],
+    "persistent":true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./main.js"],
+      "css": ["/main.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "./popup.html"
+  },
+  "permissions": ["storage","tabs","<all_urls>","activeTab","contextMenus"]
+}
