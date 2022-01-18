@@ -3,7 +3,6 @@ import { useState,useEffect } from 'react';
 import { ShadowRoot } from './ShadowRoot';
 
 import './App.css';
-import Notes from './Notes';
  
 const innerDivNotActive = {
   display:"flex",
@@ -167,7 +166,6 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
   },[])
   return (
     <ShadowRoot>
-      <Notes/>
       {/* <Alarm/> */}
       {/* <Interval/> */}
       <div className="App">

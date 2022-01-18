@@ -36,7 +36,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:extension": "node ./scripts/build-non-split.js && npm run build:clean",
-    "build:clean": "cd build/static/js && move *.js main.js  && move main.js ../../main.js && cd ../css && move *.css main.css && move main.css ../../main.css",
+    "build:clean": "cd build/static/js && mv *.js main.js  && mv main.js ../../main.js && cd ../css && mv *.css main.css && mv main.css ../../main.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -62,4 +62,3 @@
     "electron-rebuild": "^3.2.5"
   }
 }
-
