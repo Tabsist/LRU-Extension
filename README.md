@@ -2,8 +2,9 @@
 
 ##  To run locally 
 1)  Clone the repo
-2)  run (npm run build:extension) first to create the build
-3)  and then unpack the build in chrome://extensions
+2)  run (npm install), to install node-modules
+3)  run (npm run build:extension) first, to create the build
+4)  and then unpack the build in chrome://extensions
 
 
 ###  Icon...
