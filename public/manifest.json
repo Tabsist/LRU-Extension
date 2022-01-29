@@ -1,8 +1,8 @@
 {
-  "name": "LRU App",
+  "name": "LRU new App",
   "version": "1.0.0",
   "manifest_version": 2,
-  "description": "LRU Tab manager",
+  "description": "LRU new Tab manager",
   "background":
   {
     "scripts":["./background.js"],
