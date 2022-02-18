@@ -159,6 +159,12 @@ function App() {
 }
 else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
   console.log("DONT_SHOW")
+
+    chrome.storage.local.set({"lru":{}}, function() { 
+      console.log("Object saved for the first time")
+    })
+  
+
   const maindiv = h.getElementById("mainDiv")
   maindiv.style.display = "none"
 }
