@@ -24,6 +24,26 @@
             border: inset;
             cursor: pointer;
         }
+        /* @keyframes example {
+        from {background-color: greenyellow;}
+        to {background-color: #12395d;}
+        } */
+        @keyframes beat {
+        0% {
+                    transform: scale(1, 1);
+                    /* background-color: greenyellow; */
+        }
+        100% {
+                    transform: scale(0.9, 0.9);
+                    /* background-color: #12395d; */
+        }
+        }
+        .filterBtns:focus {
+          animation: beat 0.2s ease-in-out backwards;
+        }
+        .filterBtns:active{
+            animation: none;
+        }
         #labelLRU{
             font-size: medium;
             font-weight: 800;
@@ -52,7 +72,7 @@
         #hidden{
             display: none;
         }
-        #addBtn{
+        .filterBtns{
             background: #12395d;
             color: #7db0de;
             border-radius: 26%;
@@ -87,7 +107,10 @@
     <br>
     <div id="hidden">
         <p><input type="text" placeholder="Add Domain"><i class="fa fa-window-close" aria-hidden="true"></i></p>
-        <button id ="addBtn">Add</button>
+        <div id = "filterBtns">
+            <button id ="addBtn" class="filterBtns">Add</button>
+            <button id ="saveBtn" class="filterBtns">Save</button>
+        </div>   
     </div>
     <button id="btnId">Set LRU</button> 
     <script src="./popup.js"></script>

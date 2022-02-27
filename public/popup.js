@@ -2,14 +2,74 @@
 //checking if domain filter is on/off
 const domain = document.getElementById("domain")
 const hidden = document.getElementById("hidden")
-domain.addEventListener("click",()=>{
+
+const domainCheck = ()=>{
   if(domain.checked){
     hidden.style.display = "block"
+    chrome.storage.sync.set({ "checkbox":true }, () => { 
+        console.log("checked")
+    })
   }
   else{
     hidden.style.display = "none"
+    chrome.storage.sync.set({ "checkbox":false }, () => { 
+      console.log("unchecked")
+      chrome.storage.sync.set({ "domainList": [] }, () => { 
+        console.log("Emptied Domains")
+        const li = hidden.getElementsByTagName("p")
+        console.log(li)
+        const x = li.length
+        for(j=x-1;j>=0;j--){
+          console.log(li[j])
+          li[j].remove()
+        }
+      })
+  })
   }
+}
 
+chrome.storage.sync.get("checkbox", (obj) => { 
+  if(obj){
+    if(obj.checkbox){
+      hidden.style.display = "block"
+      domain.checked = true
+      chrome.storage.sync.get("domainList", (obj) => { 
+        console.log("Domainlist",obj)
+        if(obj){
+          if(obj.domainList){
+            hidden.firstElementChild.remove()
+            for(j=0;j<obj.domainList.length;j++){
+              if(obj.domainList[j] != ""){
+                console.log("asdsda",obj.domainList[j] )
+                const p = document.createElement("p")
+                const input = document. createElement("input"); 
+                input.setAttribute('type', 'text');
+                input.setAttribute('placeholder', 'Add Domain');
+                const i = document. createElement("i"); 
+                i.classList.add("fa","fa-window-close")
+                i.addEventListener("click",function(){
+                  this.parentNode.remove()
+                })
+                input.setAttribute('value', obj.domainList[j]);
+
+                p.appendChild(input)
+                p.appendChild(i)  
+                hidden.insertBefore(p,filterBtns)
+            }
+            }
+          }
+        }
+      })
+    }
+    else{
+      hidden.style.display = "none"
+      domain.checked = false
+    }
+  }
+})
+
+domain.addEventListener("click",()=>{
+    domainCheck()
 })
 
 //for the first p tag(first domain)
@@ -18,6 +78,7 @@ document.getElementsByTagName("i")[0].addEventListener("click",function(){
   })
 //for adding remaining p tags(remaining domains)  
   const addBtn = document.getElementById("addBtn")
+  const filterBtns = document.getElementById("filterBtns")
   addBtn.addEventListener("click",()=>{
     const p = document.createElement("p")
     const input = document. createElement("input"); 
@@ -29,12 +90,24 @@ document.getElementsByTagName("i")[0].addEventListener("click",function(){
       this.parentNode.remove()
     })
     p.appendChild(input)
-    p.appendChild(i)
-    
-    hidden.insertBefore(p,addBtn)
-
-
+    p.appendChild(i)  
+    hidden.insertBefore(p,filterBtns)
   })
+//for saving Domains
+const saveBtn = document.getElementById("saveBtn")
+  saveBtn.addEventListener("click",()=>{
+    li = hidden.getElementsByTagName("input")
+    const arr = []
+    for(i=0;i<li.length;i++){
+      if(li[i].value != ""){
+        arr.push(li[i].value)
+        chrome.storage.sync.set({ "domainList":arr }, () => { 
+          console.log("Saved Domains")
+        })
+    }
+  }
+  })
+
 const btnId = document.getElementById("btnId")
 chrome.storage.sync.get("set",(obj)=>{
   
