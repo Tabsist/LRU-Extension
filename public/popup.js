@@ -1,5 +1,40 @@
-// const check = document.body.getElementById("notesCheck")
-// if(check.checked){
+
+//checking if domain filter is on/off
+const domain = document.getElementById("domain")
+const hidden = document.getElementById("hidden")
+domain.addEventListener("click",()=>{
+  if(domain.checked){
+    hidden.style.display = "block"
+  }
+  else{
+    hidden.style.display = "none"
+  }
+
+})
+
+//for the first p tag(first domain)
+document.getElementsByTagName("i")[0].addEventListener("click",function(){
+      this.parentNode.remove()
+  })
+//for adding remaining p tags(remaining domains)  
+  const addBtn = document.getElementById("addBtn")
+  addBtn.addEventListener("click",()=>{
+    const p = document.createElement("p")
+    const input = document. createElement("input"); 
+    input.setAttribute('type', 'text');
+    input.setAttribute('placeholder', 'Add Domain');
+    const i = document. createElement("i"); 
+    i.classList.add("fa","fa-window-close")
+    i.addEventListener("click",function(){
+      this.parentNode.remove()
+    })
+    p.appendChild(input)
+    p.appendChild(i)
+    
+    hidden.insertBefore(p,addBtn)
+
+
+  })
 const btnId = document.getElementById("btnId")
 chrome.storage.sync.get("set",(obj)=>{
   

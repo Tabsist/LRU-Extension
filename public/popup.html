@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body{
-            background-image: url(https://toppng.com/uploads/preview/cool-background-texture-11553973476tunvczhmb1.jpg);
-            color: white;
+            /* background-image: url(https://toppng.com/uploads/preview/cool-background-texture-11553973476tunvczhmb1.jpg); */
+            color: #7db0de;
             width: 222px;
             height: 166px;
+            background: #1d5c96;
         }
         #btnId{
             background-color: green;
@@ -26,14 +28,67 @@
             font-size: medium;
             font-weight: 800;
         }
-        
+        p{
+            display: flex;
+        }
+        input[type=text]{  
+            display: flex;
+            flex: 2;
+            border: none;
+            outline: none;
+            background: transparent;
+            border-block-end-color: lightseagreen;
+            border-block-end-width: 1px;
+            border-block-end-style: revert;
+            color: lightseagreen;
+
+        }
+        .fa{
+            display: flex;
+            color: lightseagreen;
+            filter: invert(100%);
+            cursor: pointer;
+        }
+        #hidden{
+            display: none;
+        }
+        #addBtn{
+            background: #12395d;
+            color: #7db0de;
+            border-radius: 26%;
+            width: 45px;
+            height: 32px;
+            border: none;
+            filter: drop-shadow(2px 2px 1px #7db0de);
+            cursor: pointer;
+        }
+        #filter{   
+            font-size: medium;
+            font-weight: 700;
+        }
+        hr{
+            border: 1px solid #12395d;
+        }
+        h1{
+            border: 4px solid #12395d;
+            border-block-end: revert;
+            border-radius: 12px;
+            padding: 3px 16%;
+        }
     </style>
 </head>
 <body>
     <h1>Tabsist App</h1>
     <label for="" id="labelLRU">LRU</label>
-    <!-- <input type="checkbox" id="notesCheck"/>
-     -->
+    <br>
+    <hr>
+    <input type="checkbox" name="domain" id="domain">
+    <label for="html" id="filter">Filter Based On Domain</label>
+    <br>
+    <div id="hidden">
+        <p><input type="text" placeholder="Add Domain"><i class="fa fa-window-close" aria-hidden="true"></i></p>
+        <button id ="addBtn">Add</button>
+    </div>
     <button id="btnId">Set LRU</button> 
     <script src="./popup.js"></script>
 </body>

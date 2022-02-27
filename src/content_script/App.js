@@ -1,9 +1,38 @@
 /*global chrome*/
 import { useState,useEffect } from 'react';
 import { ShadowRoot } from './ShadowRoot';
-
+// import IMG from "../../images/threeDots.jpg"
+import $ from "jquery";
+import "jquery-ui-dist/jquery-ui"
 import './App.css';
  
+const threeDots = {
+    width: "45px",
+    height: "45px",
+    borderImage: "none",
+    border: "1px solid lightseagreen",
+    borderRadius: "39%",
+    top: "60%",
+    position: "fixed",
+    marginLeft: "48vw",
+    cursor:"pointer",
+    zIndex:"2147483647"
+
+}
+
+const upArrow = {
+  width: "2em",
+  height: "2em",
+  borderImage: "none",
+  border: "1px solid lightseagreen",
+  borderRadius: "39%",
+  top: "64%",
+  position: "fixed",
+  marginLeft: "94vw",
+  cursor:"pointer",
+  zIndex:"2147483647"
+}
+
 const innerDivNotActive = {
   display:"flex",
   flexDirection:"column",
@@ -21,7 +50,8 @@ const Icon = {
   marginTop: "-7%",
   marginLeft: "98%",
   backgroundColor: "white",
-  borderRadius: "50%"
+  borderRadius: "50%",
+  width:"32px"
 }
 
 const innerDivActive = {
@@ -65,14 +95,18 @@ const Header1 = {
 
 function App() {
   console.log("app")
+  // const h= document.getElementById("insertion-point").firstChild.shadowRoot
   const [url, seturl] = useState([])
+  const [mouseMove, setmouseMove] = useState(false)
 
-  
+
+
 
   useEffect(()=>{
     const currentTimeInSeconds=Math.floor(Date.now()/1000); 
     const x = window.location.href
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
+
     h.innerHTML = `<style>
       .hides{
         background-color:black;
@@ -88,6 +122,22 @@ function App() {
       }
       #second:hover .hides{
         display:block;
+      }
+      .megaDiv{
+        display:none;
+      }
+      #upArrow{
+        display:none;
+      }
+      #gigaDiv:hover .megaDiv{
+        display:flex !important;
+      }
+      #gigaDiv:hover #threeDots{
+        filter: grayscale(100%);
+      }
+      #upArrow:hover{
+        font-size:1.2em;
+        filter: drop-shadow(8px 8px 10px gray);
       }
     </style>`
     console.log("Title",document.title)
@@ -170,20 +220,76 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
 }
 });
   },[])
+
+  useEffect(()=>{
+    const h= document.getElementById("insertion-point").firstChild.shadowRoot
+
+
+      const e = h.getElementById("gigaDiv")
+      if(e){
+        console.log(e)
+        const x = e.getElementsByTagName("img")[1]
+        if(x){
+          console.log(x)
+          $(x).draggable({ axis: "x" });
+        }
+      }
+    
+
+
+  },[mouseMove])
+  function MouseClick(event){
+    const h= document.getElementById("insertion-point").firstChild.shadowRoot
+    const e = h.getElementById("gigaDiv")
+    const upArrow = e.getElementsByTagName("img")[0]
+    // const threeDots = e.getElementsByTagName("img")[1]
+    const megaDiv = e.getElementsByTagName("div")[0]
+    megaDiv.style.display = "flex"
+    // threeDots.style.display = "none"
+    upArrow.style.display = "flex"
+    event.target.style.display = "none"
+      // event.target.previousElementSibling.style.display = "flex"
+      // 
+      // event.target.nextElementSibling.style.display = "flex"
+  }
+  function MouseClick2(event){
+    const h= document.getElementById("insertion-point").firstChild.shadowRoot
+    const e = h.getElementById("gigaDiv")
+    const megaDiv = e.getElementsByTagName("div")[0]
+    const threeDots = e.getElementsByClassName("threeDots")[0]
+    console.log(megaDiv)
+    threeDots.style.display = "flex"
+    megaDiv.style.display = "none"
+    event.target.style.display = "none"
+    
+    // event.target.nextElementSibling.style.display = "flex"
+    // event.target.nextElementSibling.nextElementSibling.style.display = "none"
+    
+  }
+  function MouseMove(event){
+    if(!mouseMove){
+      setmouseMove(true)
+    }
+  }
   return (
     <ShadowRoot>
-      {/* <Alarm/> */}
-      {/* <Interval/> */}
       <div className="App">
-        {/* <h1>Hi Neeraj!</h1> */}
-        <div id="mainDiv" style={{position:"fixed",top:"70%",justifyContent:"center",zIndex:"99999",display:"flex",left:"25vh",fontFamily:"NONE"}}>
+        <div id="gigaDiv">
+        {/* <img id ="upArrow" style={threeDots} onClick={MouseClick2}  src="https://cdn-icons-png.flaticon.com/512/892/892692.png" alt="#" /> */}
+        <img id ="upArrow" style={upArrow} onClick={MouseClick2}  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH5ZlhdkZ8iYNw_2Y8wvXY20nteFyyX8F21BqzzbYLq_MM5xfe5BNwgPNKbgRmzMrVlWE&usqp=CAU" alt="#" />
+        <img id="threeDots" class="threeDots" style={threeDots} onClick={MouseClick} onMouseMove={MouseMove} src="https://thumbs.dreamstime.com/b/three-dots-icon-three-dots-icon-sign-symbol-vector-illustration-icon-108251358.jpg" alt="#" />
+        <div class = "megaDiv">
+        
+        <div id="mainDiv" style={{position:"fixed",marginRight:"30px",top:"70%",justifyContent:"center",zIndex:"99999",display:"flex",width:"100vw",fontFamily:"NONE"}}>
         {
+      
           url.map((u,index)=>{
             return <div id="second" style={{display:"flex",flexDirection:"column"}}><div class='hides'>{(u.url).length>27 ? (u.url).slice(0,27) + "..." : u.url}</div><div style={u.url===window.location.href ? innerDivActive : innerDivNotActive}><a style ={Anchor} href={u.url}><h1 key ={index} style={Header1}>{(u.title).length>27 ? (u.title).slice(0,27) + "..." : u.title}</h1> <img style={Image} src={u.image} alt={"https://images.pexels.com/photos/1167355/pexels-photo-1167355.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}/></a><img style={Icon} src={u.icon}></img></div></div>
           })
         }
         </div>
-        
+        </div>
+        </div>
       </div>
     </ShadowRoot>
   );
