@@ -1,3 +1,21 @@
+//Creating Input Elements to take in domain
+const createElements = ()=>{
+  const p = document.createElement("p")
+  const input = document. createElement("input"); 
+  const i = document. createElement("i"); 
+  input.setAttribute('type', 'text');
+  input.setAttribute('placeholder', 'Add Domain');
+  
+  i.classList.add("fa","fa-window-close")
+  i.addEventListener("click",function(){
+    this.parentNode.remove()
+  })
+  
+
+  p.appendChild(input)
+  p.appendChild(i) 
+  return p
+}
 
 //checking if domain filter is on/off
 const domain = document.getElementById("domain")
@@ -41,19 +59,8 @@ chrome.storage.sync.get("checkbox", (obj) => {
             for(j=0;j<obj.domainList.length;j++){
               if(obj.domainList[j] != ""){
                 console.log("asdsda",obj.domainList[j] )
-                const p = document.createElement("p")
-                const input = document. createElement("input"); 
-                input.setAttribute('type', 'text');
-                input.setAttribute('placeholder', 'Add Domain');
-                const i = document. createElement("i"); 
-                i.classList.add("fa","fa-window-close")
-                i.addEventListener("click",function(){
-                  this.parentNode.remove()
-                })
-                input.setAttribute('value', obj.domainList[j]);
-
-                p.appendChild(input)
-                p.appendChild(i)  
+                const p = createElements()
+                p.firstChild.setAttribute('value', obj.domainList[j]); 
                 hidden.insertBefore(p,filterBtns)
             }
             }
@@ -80,17 +87,7 @@ document.getElementsByTagName("i")[0].addEventListener("click",function(){
   const addBtn = document.getElementById("addBtn")
   const filterBtns = document.getElementById("filterBtns")
   addBtn.addEventListener("click",()=>{
-    const p = document.createElement("p")
-    const input = document. createElement("input"); 
-    input.setAttribute('type', 'text');
-    input.setAttribute('placeholder', 'Add Domain');
-    const i = document. createElement("i"); 
-    i.classList.add("fa","fa-window-close")
-    i.addEventListener("click",function(){
-      this.parentNode.remove()
-    })
-    p.appendChild(input)
-    p.appendChild(i)  
+    const p = createElements() 
     hidden.insertBefore(p,filterBtns)
   })
 //for saving Domains
