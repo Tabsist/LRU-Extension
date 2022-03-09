@@ -14,7 +14,7 @@ const threeDots = {
     borderRadius: "39%",
     top: "60%",
     position: "fixed",
-    marginLeft: "48vw",
+    marginLeft: "50vw",
     cursor:"pointer",
     zIndex:"2147483647"
 
@@ -99,7 +99,76 @@ function App() {
   const [url, seturl] = useState([])
   const [mouseMove, setmouseMove] = useState(false)
 
+  const displayURL = (h)=>{
+    chrome.storage.local.get("lru", function(items) {
+      var pairs=[]
+     
+      var allKeys = Object.keys(items.lru);
+      console.log(allKeys);
+      console.log(items.lru);
+      const map = new Map()
+      for(var key in items.lru){
+        map.set(key,[items.lru[key][0],items.lru[key][1],items.lru[key][2],items.lru[key][3],items.lru[key][4],items.lru[key][5]]);
+        
+      }
 
+      const mapSort2 = new Map([...map.entries()].sort((a, b) => a[1][0] - b[1][0]));
+      console.log("Map"+map)
+      console.log("sortedMap",mapSort2)
+      for (const [key, value] of mapSort2.entries()) {
+        console.log(key, value);
+      }
+      if(mapSort2.size>5){
+        while(mapSort2.size!=5){
+          console.log("HI",mapSort2.keys().next().value)
+        // chrome.storage.local.remove(mapSort2.keys().next().value)
+        allKeys = allKeys.filter((val)=> val!=mapSort2.keys().next().value)
+        mapSort2.delete(mapSort2.keys().next().value)
+        pairs = pairs.filter((val)=> val.url!=mapSort2.keys().next().value)
+        }
+      }
+      const mapSort3 = new Map([...mapSort2.entries()].sort((a, b) => b[1][0] - a[1][0]));
+      console.log(mapSort3)
+      const obj = Object.fromEntries(mapSort3);
+      console.log(obj)
+      chrome.storage.local.set({"lru":obj}, function() { 
+        console.log("only 5 urls saved")
+    
+      })
+      for(const [key, value] of mapSort3.entries()){
+        pairs.push({"url":key,"image":value[1],"title":value[2],"icon":value[3],"tabId":value[4],"windowId":value[5]})
+      }
+      // chrome.storage.local.set({"lru":pairs}, function() { 
+      //   console.log("Object saved for the first time")
+    
+      // })
+      const maindiv = h.getElementById("mainDiv")
+      maindiv.style.display = "flex"
+      console.log("pairs",pairs)
+      allKeys = []
+      seturl(pairs)
+
+      
+  });
+  }
+
+
+  const storeLRU = (x,obj,currentTimeInSeconds,msgObj,title,h)=>{
+    if(Object.keys(obj).length === 0){
+      chrome.storage.local.set({"lru":{[x] : [currentTimeInSeconds,msgObj.dataurl,title,msgObj.iconurl,msgObj.tabId,msgObj.windowId]}}, function() { 
+        console.log("Object saved for the first time")
+        displayURL(h)
+      })
+    }
+    else{
+      obj.lru[x] = [currentTimeInSeconds,msgObj.dataurl,title,msgObj.iconurl,msgObj.tabId,msgObj.windowId]
+      chrome.storage.local.set(obj, function() { 
+        console.log("Object not saved for the first time")
+        displayURL(h)
+      })
+    }  
+
+  }
 
 
   useEffect(()=>{
@@ -154,64 +223,60 @@ function App() {
       console.log("In ContentScript",msgObj)
     if(msgObj.type === "FROM_BACKGROUND_TRUE")
     {  
+      //if localStorage.get checked:true then lru empty
+      //check if domain list is present
+      //check if current url(x) is in domain list
+      //If yes then store in lru else dont store it 
+      console.log(window.location.origin)
+
     chrome.storage.local.get("lru",(obj)=>{
       console.log("OBJECT",obj)
-      if(Object.keys(obj).length === 0){
-        chrome.storage.local.set({"lru":{[x] : [currentTimeInSeconds,msgObj.dataurl,document.title,msgObj.iconurl]}}, function() { 
-          console.log("Object saved for the first time")
-        })
-      }
-      else{
-        obj.lru[x] = [currentTimeInSeconds,msgObj.dataurl,document.title,msgObj.iconurl]
-        chrome.storage.local.set(obj, function() { 
-          console.log("Object not saved for the first time")
-        })
-      }  
-  
-    chrome.storage.local.get("lru", function(items) {
-      var pairs=[]
-     
-      var allKeys = Object.keys(items.lru);
-      console.log(allKeys);
-      console.log(items.lru);
-      const map = new Map()
-      for(var key in items.lru){
-        map.set(key,[items.lru[key][0],items.lru[key][1],items.lru[key][2],items.lru[key][3]]);
-        
-      }
-
-      const mapSort2 = new Map([...map.entries()].sort((a, b) => a[1][0] - b[1][0]));
-      console.log("Map"+map)
-      console.log("sortedMap",mapSort2)
-      for (const [key, value] of mapSort2.entries()) {
-        console.log(key, value);
-      }
-      if(mapSort2.size>5){
-        while(mapSort2.size!=5){
-        chrome.storage.sync.remove(mapSort2.keys().next().value)
-        allKeys = allKeys.filter((val)=> val!=mapSort2.keys().next().value)
-        mapSort2.delete(mapSort2.keys().next().value)
-        pairs = pairs.filter((val)=> val.url!=mapSort2.keys().next().value)
+      chrome.storage.sync.get("checkbox", (checkboxObj) => {  
+      if(checkboxObj){
+        if(checkboxObj.checkbox){
+          let k=0
+          console.log("CHECKED")
+          chrome.storage.sync.get("domainList", (domainListObj) => {
+            const domainli = domainListObj.domainList
+            console.log(domainli)
+            if(domainli.length>0){
+              while(k<domainli.length){
+                if(domainli[k].includes(window.location.origin)){
+                  console.log("hi dom",domainli[k],x)
+                  storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
+                  break
+                }
+                k+=1
+              }
+              if(k==domainli.length){
+                displayURL(h)
+              }
+            }
+            else{
+              console.log("hi zero")
+              seturl([])
+            }
+          })  
+        }
+        else{
+          console.log("UNCHECKED",checkboxObj.checkbox)
+          storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
         }
       }
-      const mapSort3 = new Map([...mapSort2.entries()].sort((a, b) => b[1][0] - a[1][0]));
-      for(const [key, value] of mapSort3.entries()){
-        pairs.push({"url":key,"image":value[1],"title":value[2],"icon":value[3]})
-      }
-      const maindiv = h.getElementById("mainDiv")
-      maindiv.style.display = "flex"
-      console.log("pairs",pairs)
-      seturl(pairs)
-
+      // else{
+      //   storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
+      // }
+    })
       
-  });
+  
+
 });
 }
 else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
   console.log("DONT_SHOW")
 
     chrome.storage.local.set({"lru":{}}, function() { 
-      console.log("Object saved for the first time")
+      console.log("LRU List Emptied")
     })
   
 

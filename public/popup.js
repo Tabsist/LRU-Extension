@@ -8,7 +8,28 @@ const createElements = ()=>{
   
   i.classList.add("fa","fa-window-close")
   i.addEventListener("click",function(){
-    this.parentNode.remove()
+    chrome.storage.local.get("lru",(items)=>{
+      var allKeys = Object.keys(items.lru);
+      const obj = items.lru
+      console.log(items.lru.size)
+      const removedDomainLink = this.parentNode.firstElementChild.value
+      for(let j=0;j<allKeys.length;j++){
+        if(allKeys[j].includes(removedDomainLink))
+        {
+          console.log("in i tag",obj[allKeys[j]])
+          delete obj[allKeys[j]]
+        }    
+      }
+      chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
+        console.log("LRU List Emptied",returnedObj)
+        // chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+        
+      })
+      this.parentNode.remove()
+      
+      allKeys = []
+    })
+    
   })
   
 
@@ -44,6 +65,11 @@ const domainCheck = ()=>{
       })
   })
   }
+  chrome.storage.local.set({"lru":{}}, function() { 
+    console.log("LRU List Emptied")
+    chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+  })
+
 }
 
 chrome.storage.sync.get("checkbox", (obj) => { 
@@ -81,7 +107,26 @@ domain.addEventListener("click",()=>{
 
 //for the first p tag(first domain)
 document.getElementsByTagName("i")[0].addEventListener("click",function(){
-      this.parentNode.remove()
+  chrome.storage.local.get("lru",(items)=>{
+    var allKeys = Object.keys(items.lru);
+    const obj = items.lru
+    console.log(items.lru.size)
+    const removedDomainLink = this.parentNode.firstElementChild.value
+    for(let j=0;j<allKeys.length;j++){
+      if(allKeys[j].includes(removedDomainLink))
+      {
+        console.log("in i tag",obj[allKeys[j]])
+        delete obj[allKeys[j]]
+      }    
+    }
+    chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
+      console.log("LRU List Emptied",returnedObj)
+      
+    })
+    this.parentNode.remove()
+    
+    allKeys = []
+  })
   })
 //for adding remaining p tags(remaining domains)  
   const addBtn = document.getElementById("addBtn")
@@ -98,11 +143,16 @@ const saveBtn = document.getElementById("saveBtn")
     for(i=0;i<li.length;i++){
       if(li[i].value != ""){
         arr.push(li[i].value)
-        chrome.storage.sync.set({ "domainList":arr }, () => { 
-          console.log("Saved Domains")
-        })
+      }
     }
-  }
+    chrome.storage.sync.set({ "domainList":arr }, () => { 
+      console.log("Saved Domains")
+      // chrome.storage.local.set({"lru":{}}, function() { 
+      //   console.log("LRU List Emptied")
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+      // })
+    })
+
   })
 
 const btnId = document.getElementById("btnId")
@@ -140,11 +190,12 @@ btnId.addEventListener("click",()=>{
           function(dataurl){
               console.log("POPup",dataurl)
               console.log("tabs",tabs[0])
+              console.log(tabs[0].windowId,tabs[0].id)
               //   chrome.tabs.sendMessage(tabs[0].id,dataurl);
               // chrome.processes.getProcessIdForTab(tabs[0].id,(processId)=>{
               //     console.log(processId)
               // })
-              chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl});
+              chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId});
           
           })
           })
