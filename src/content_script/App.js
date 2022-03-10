@@ -138,10 +138,7 @@ function App() {
       for(const [key, value] of mapSort3.entries()){
         pairs.push({"url":key,"image":value[1],"title":value[2],"icon":value[3],"tabId":value[4],"windowId":value[5]})
       }
-      // chrome.storage.local.set({"lru":pairs}, function() { 
-      //   console.log("Object saved for the first time")
-    
-      // })
+
       const maindiv = h.getElementById("mainDiv")
       maindiv.style.display = "flex"
       console.log("pairs",pairs)
@@ -161,12 +158,19 @@ function App() {
       })
     }
     else{
+      var allKeys = Object.keys(obj.lru)
+      for(let k=0;k<allKeys.length;k++){
+          if(obj.lru[allKeys[k]][4] == msgObj.tabId){
+              delete obj.lru[allKeys[k]]
+          }   
+      }
       obj.lru[x] = [currentTimeInSeconds,msgObj.dataurl,title,msgObj.iconurl,msgObj.tabId,msgObj.windowId]
       chrome.storage.local.set(obj, function() { 
         console.log("Object not saved for the first time")
         displayURL(h)
       })
     }  
+
 
   }
 
@@ -307,15 +311,13 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
     const e = h.getElementById("gigaDiv")
     const upArrow = e.getElementsByTagName("img")[0]
-    // const threeDots = e.getElementsByTagName("img")[1]
+
     const megaDiv = e.getElementsByTagName("div")[0]
     megaDiv.style.display = "flex"
-    // threeDots.style.display = "none"
+
     upArrow.style.display = "flex"
     event.target.style.display = "none"
-      // event.target.previousElementSibling.style.display = "flex"
-      // 
-      // event.target.nextElementSibling.style.display = "flex"
+
   }
   function MouseClick2(event){
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
@@ -326,12 +328,11 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
     threeDots.style.display = "flex"
     megaDiv.style.display = "none"
     event.target.style.display = "none"
-    
-    // event.target.nextElementSibling.style.display = "flex"
-    // event.target.nextElementSibling.nextElementSibling.style.display = "none"
-    
+
   }
   function MouseMove(event){
+    const h= document.getElementById("insertion-point").firstChild.shadowRoot
+    displayURL(h)
     if(!mouseMove){
       setmouseMove(true)
     }
@@ -349,7 +350,16 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
         {
       
           url.map((u,index)=>{
-            return <div id="second" style={{display:"flex",flexDirection:"column"}}><div class='hides'>{(u.url).length>27 ? (u.url).slice(0,27) + "..." : u.url}</div><div style={u.url===window.location.href ? innerDivActive : innerDivNotActive}><a style ={Anchor} href={u.url}><h1 key ={index} style={Header1}>{(u.title).length>27 ? (u.title).slice(0,27) + "..." : u.title}</h1> <img style={Image} src={u.image} alt={"https://images.pexels.com/photos/1167355/pexels-photo-1167355.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}/></a><img style={Icon} src={u.icon}></img></div></div>
+            return <div id="second" style={{display:"flex",flexDirection:"column"}}>
+                   <div class='hides'>{(u.url).length>27 ? (u.url).slice(0,27) + "..." : u.url}</div>
+                    <div style={u.url===window.location.href ? innerDivActive : innerDivNotActive}>
+                      <a style ={Anchor} href={u.url}>
+                        <h1 key ={index} style={Header1}>{(u.title).length>27 ? (u.title).slice(0,27) + "..." : u.title}</h1> 
+                        <img style={Image} src={u.image} alt={"https://images.pexels.com/photos/1167355/pexels-photo-1167355.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}/>
+                      </a>
+                      <img style={Icon} src={u.icon}></img>
+                    </div>
+                   </div>
           })
         }
         </div>

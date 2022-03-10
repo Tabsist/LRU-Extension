@@ -178,28 +178,10 @@ btnId.addEventListener("click",()=>{
       })
     }
     else{
-      chrome.storage.sync.set({ "set":true }, () => { 
-        btnId.style.backgroundColor = "green"
-        // chrome.runtime.sendMessage({type:"FROM_POPUP",value:true});
-        chrome.tabs.query( {
-          // gets the window the user can currently see
-          active: true, 
-          currentWindow: true 
-          },function(tabs){
-          chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,
-          function(dataurl){
-              console.log("POPup",dataurl)
-              console.log("tabs",tabs[0])
-              console.log(tabs[0].windowId,tabs[0].id)
-              //   chrome.tabs.sendMessage(tabs[0].id,dataurl);
-              // chrome.processes.getProcessIdForTab(tabs[0].id,(processId)=>{
-              //     console.log(processId)
-              // })
-              chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId});
-          
-          })
-          })
-      })
+        chrome.storage.sync.set({ "set":true }, () => { 
+          btnId.style.backgroundColor = "green"
+          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"});
+        })
     }
 
   })
