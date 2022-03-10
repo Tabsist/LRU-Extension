@@ -46,9 +46,29 @@ chrome.runtime.onMessage.addListener((obj)=>{
                         })
                         console.log("tabs",tabs[0])
                         chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId});
-                    
+                        chrome.webNavigation.onBeforeNavigate.addListener((details)=>{
+                            console.log("Before Navigating",details)
+                          })
                     })
             })
+    }
+    else if(obj.type === "ACTIVATE_TAB" ){
+        console.log("BG",obj.tabId,chrome.runtime.id)
+        // chrome.tabs.get(obj.tabId, async (tab) => {
+        chrome.windows.update(parseInt(obj.windowId),{focused:true},()=>{
+            console.log("Window Updated")
+            chrome.tabs.update(parseInt(obj.tabId),{ active: true },()=>{
+                console.log("Tab Updated")
+            });
+        })    
+        
+            // let contentjsFile = chrome.runtime.getManifest().content_scripts[0].js[0];
+            // chrome.tabs.executeScript(parseInt(obj.tabId), {
+            //     file: contentjsFile
+            // })
+        
+        // })
+        
     }
     else{
 

@@ -19,5 +19,5 @@
   "browser_action": {
     "default_popup": "./popup.html"
   },
-  "permissions": ["storage","tabs","<all_urls>","activeTab","contextMenus"]
+  "permissions": ["storage","tabs","<all_urls>","activeTab","contextMenus","webNavigation"]
 }

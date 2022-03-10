@@ -332,10 +332,21 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
   }
   function MouseMove(event){
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
+    if(chrome.runtime.id == undefined){
+      console.log("no chrome.runtimeId")
+      return
+    }
     displayURL(h)
     if(!mouseMove){
       setmouseMove(true)
     }
+  }
+
+  function anchorClick(event){
+    console.log(event.currentTarget.id,chrome.runtime.id)
+    const ids = (event.currentTarget.id).split(":")
+    if(chrome.runtime.id == undefined) return;
+    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]})
   }
   return (
     <ShadowRoot>
@@ -353,7 +364,7 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
             return <div id="second" style={{display:"flex",flexDirection:"column"}}>
                    <div class='hides'>{(u.url).length>27 ? (u.url).slice(0,27) + "..." : u.url}</div>
                     <div style={u.url===window.location.href ? innerDivActive : innerDivNotActive}>
-                      <a style ={Anchor} href={u.url}>
+                      <a id={u.tabId+":"+u.windowId} style ={Anchor} onClick={anchorClick}>
                         <h1 key ={index} style={Header1}>{(u.title).length>27 ? (u.title).slice(0,27) + "..." : u.title}</h1> 
                         <img style={Image} src={u.image} alt={"https://images.pexels.com/photos/1167355/pexels-photo-1167355.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"}/>
                       </a>
