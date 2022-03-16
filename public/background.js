@@ -5,6 +5,7 @@ const deleteItem= (tabId,n)=>{
     chrome.storage.local.get("lru",(items)=>{
         var allKeys = Object.keys(items.lru)
         for(let k=0;k<allKeys.length;k++){
+            console.log(items.lru[allKeys[k]])
             if(items.lru[allKeys[k]][n] == tabId){
                 delete items.lru[allKeys[k]]
             }   
@@ -21,12 +22,38 @@ chrome.runtime.onMessage.addListener((obj)=>{
     if(obj.type==="FROM_CONTENT_TRUE"){
         console.log("INSIDE BACKGROUND when TRUE")
         // window.onload = ()=>{
+        //Deals with when the Extension is first Loaded    
+        if(obj.mode === "LOADING_EXTENSION" ) {
+                
+                chrome.tabs.query( {},function(tabs){
+                    console.log("LOADING_EXTENSION",tabs)
+                    const tabList = []
+                    for(let idx = 0; idx <tabs.length;idx++){
+                        tabList.push(tabs[idx].id)
+                    }
+                    chrome.storage.local.get("lru",(items)=>{
+                        var allKeys = Object.keys(items.lru)
+                        for(let k=0;k<allKeys.length;k++){
+                            console.log(items.lru[allKeys[k]])
+                            if(!tabList.includes(items.lru[allKeys[k]][4])){
+                                delete items.lru[allKeys[k]]
+                            }   
+                        }
+                        chrome.storage.local.set({"lru":items.lru},()=>{
+                            console.log("Item deleted Successfully")
+                        })
+                        
+                    })
+
+                })
+            }  
         chrome.tabs.query( {
             // gets the window the user can currently see
             active: true, 
             currentWindow: true 
             },function(tabs){
                 // if(tabs.length>0){
+
                     chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,                        
                     function(dataurl){
                         console.log("POPup",dataurl)
@@ -57,15 +84,18 @@ chrome.runtime.onMessage.addListener((obj)=>{
         // chrome.tabs.get(obj.tabId, async (tab) => {
         chrome.windows.update(parseInt(obj.windowId),{focused:true},()=>{
             console.log("Window Updated")
-            chrome.tabs.update(parseInt(obj.tabId),{ active: true },()=>{
-                console.log("Tab Updated")
-            });
+                chrome.tabs.update(parseInt(obj.tabId),{ active: true },()=>{
+                    console.log("Tab Updated")
+                    // let contentjsFile = chrome.runtime.getManifest().content_scripts[0].js[0];
+                    // chrome.tabs.executeScript(parseInt(obj.tabId), {
+                    //     file: contentjsFile
+                    // })
+                });
+
         })    
+        return true
         
-            // let contentjsFile = chrome.runtime.getManifest().content_scripts[0].js[0];
-            // chrome.tabs.executeScript(parseInt(obj.tabId), {
-            //     file: contentjsFile
-            // })
+
         
         // })
         

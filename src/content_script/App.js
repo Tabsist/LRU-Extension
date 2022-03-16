@@ -16,7 +16,8 @@ const threeDots = {
     position: "fixed",
     marginLeft: "50vw",
     cursor:"pointer",
-    zIndex:"2147483647"
+    zIndex:"2147483647",
+    opacity:"0.3"
 
 }
 
@@ -84,7 +85,8 @@ const Anchor = {
   justifyContent: "center",
   width: "inherit",
   height: "inherit",
-  textDecoration:"none"
+  textDecoration:"none",
+  cursor:"pointer"
 }
 
 const Header1 = {
@@ -95,9 +97,16 @@ const Header1 = {
 
 function App() {
   console.log("app")
+  
   // const h= document.getElementById("insertion-point").firstChild.shadowRoot
   const [url, seturl] = useState([])
   const [mouseMove, setmouseMove] = useState(false)
+  // $(window).bind("beforeunload", function() { 
+  //   chrome.storage.local.set({"lru":{}}, function() { 
+  //     console.log("LRU List Emptied")
+  //     // chrome.runtime.sendMessage({type:"FROM_POPUP_FALSE"});
+  //   })
+  // })
 
   const displayURL = (h)=>{
     chrome.storage.local.get("lru", function(items) {
@@ -176,6 +185,7 @@ function App() {
 
 
   useEffect(()=>{
+    
     const currentTimeInSeconds=Math.floor(Date.now()/1000); 
     const x = window.location.href
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
@@ -193,6 +203,13 @@ function App() {
         padding-top: 2px;
         padding-bottom: 2px;
       }
+      @keyframes op{
+        from { opacity: 1}
+        to   { opacity: 0.3}
+      }
+      #threeDots{
+        animation: op 10s;
+      }
       #second:hover .hides{
         display:block;
       }
@@ -209,15 +226,15 @@ function App() {
         filter: grayscale(100%);
       }
       #upArrow:hover{
-        font-size:1.2em;
-        filter: drop-shadow(8px 8px 10px gray);
+        font-size:1em;
+        filter: drop-shadow(0px 0px 2px #7db0de);
       }
     </style>`
     console.log("Title",document.title)
    
     chrome.storage.sync.get("set",(obj)=>{
       if(obj.set){
-        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE",mode:"LOADING_EXTENSION"})
       }
       else{
         console.log("Not working set in content script")
@@ -276,17 +293,17 @@ function App() {
 
 });
 }
-else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
-  console.log("DONT_SHOW")
+// else if(msgObj.type === "FROM_POPUP_FALSE"){
+//   console.log("DONT_SHOW")
 
-    chrome.storage.local.set({"lru":{}}, function() { 
-      console.log("LRU List Emptied")
-    })
+//     chrome.storage.local.set({"lru":{}}, function() { 
+//       console.log("LRU List Emptied")
+//     })
   
 
-  const maindiv = h.getElementById("mainDiv")
-  maindiv.style.display = "none"
-}
+//   const maindiv = h.getElementById("mainDiv")
+//   maindiv.style.display = "none"
+// }
 });
   },[])
 
@@ -330,7 +347,7 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
     event.target.style.display = "none"
 
   }
-  function MouseMove(event){
+  function MouseMove(){
     const h= document.getElementById("insertion-point").firstChild.shadowRoot
     if(chrome.runtime.id == undefined){
       console.log("no chrome.runtimeId")
@@ -346,7 +363,11 @@ else if(msgObj.type === "FROM_BACKGROUND_FALSE"){
     console.log(event.currentTarget.id,chrome.runtime.id)
     const ids = (event.currentTarget.id).split(":")
     if(chrome.runtime.id == undefined) return;
-    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]})
+    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]},()=>{
+      console.log("GGGGGG")
+      
+    })
+
   }
   return (
     <ShadowRoot>

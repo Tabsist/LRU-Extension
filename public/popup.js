@@ -129,31 +129,66 @@ document.getElementsByTagName("i")[0].addEventListener("click",function(){
   })
   })
 //for adding remaining p tags(remaining domains)  
-  const addBtn = document.getElementById("addBtn")
-  const filterBtns = document.getElementById("filterBtns")
-  addBtn.addEventListener("click",()=>{
-    const p = createElements() 
-    hidden.insertBefore(p,filterBtns)
-  })
+const addBtn = document.getElementById("addBtn")
+const filterBtns = document.getElementById("filterBtns")
+addBtn.addEventListener("click",()=>{
+  const p = createElements() 
+  hidden.insertBefore(p,filterBtns)
+})
+
+// for validating domains
+const validateDomain = (domainName)=>{
+  if(domainName.length == 4 && domainName[0]=='https:' && domainName[1]=="" && domainName[2]!="" && domainName[3]==""){
+    return true
+  }
+  return false
+}
+
 //for saving Domains
 const saveBtn = document.getElementById("saveBtn")
   saveBtn.addEventListener("click",()=>{
     li = hidden.getElementsByTagName("input")
     const arr = []
+    let flag = -1
     for(i=0;i<li.length;i++){
       if(li[i].value != ""){
-        arr.push(li[i].value)
+        let x = li[i].value.split("/")
+        if(validateDomain(x)){
+          arr.push(li[i].value)
+        }
+        else{
+          flag= i+1
+          break
+        }
       }
     }
+    let success = document.getElementById("success")
+    if(flag>-1){
+      success.innerText = "Domain: "+flag+" is Incorrect!"
+      success.style.color  = "#DF4D55" 
+      success.style.display = "block"
+      setTimeout(()=>{
+        success.style.display = "none"
+      },3000)
+    }  
+    else{
     chrome.storage.sync.set({ "domainList":arr }, () => { 
       console.log("Saved Domains")
       // chrome.storage.local.set({"lru":{}}, function() { 
       //   console.log("LRU List Emptied")
-        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+      chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
       // })
+      // let success = document.getElementById("success")
+      success.innerText = "*Saved Successfully!"
+      success.style.color  = "lightseagreen" 
+      success.style.display = "block"
+      setTimeout(()=>{
+        success.style.display = "none"
+      },3000)
     })
-
+    }
   })
+  
 
 const btnId = document.getElementById("btnId")
 chrome.storage.sync.get("set",(obj)=>{
@@ -174,7 +209,11 @@ btnId.addEventListener("click",()=>{
     if(obj.set){
       chrome.storage.sync.set({ "set":false }, () => { 
         btnId.style.backgroundColor = "red"
-        chrome.runtime.sendMessage({type:"FROM_POPUP",value:false});
+        chrome.storage.local.set({"lru":{}}, function() { 
+          console.log("LRU List Emptied")
+          // chrome.runtime.sendMessage({type:"FROM_POPUP_FALSE"});
+        })
+        
       })
     }
     else{
