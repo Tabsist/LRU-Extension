@@ -39,7 +39,7 @@
 
   1️⃣  Clone the repo or Download the Zip file.
 
-  2️⃣  Run [npm](https://www.npmjs.com/) install
+  2️⃣  [Run npm](https://www.npmjs.com/) install
   
   3️⃣  In your code-editor type the command
   
