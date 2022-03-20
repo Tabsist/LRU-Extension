@@ -16,7 +16,7 @@
 <p align="center">
   <a href="" rel="noopener">
 </p>
-<h1 align = 'center'> 👥 User Mode</h1>
+<h3 align = 'center'> 👥 User Mode</h3>
 
 
   1️⃣   [Link to the zip file](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj), download the file
@@ -35,7 +35,7 @@
 <p align="center">
   <a href="" rel="noopener">
 </p>
-<h1 align = 'center'> 🖱 Developer Mode</h1>
+<h3 align = 'center'> 🖱 Developer Mode</h3>
 
   1️⃣  Clone the repo or Download the Zip file.
 
