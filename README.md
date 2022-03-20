@@ -44,17 +44,31 @@
   2️⃣  Run [npm](https://www.npmjs.com/) install
 
 
+<div align="center">
+<h3 align="center"> The silent look of the icon 😎 (right in the middle) </h3>
+<br>
+<p align="center">
+  <img src ="./images/howExtensionLooks.PNG" width = 800px>
+</p>
+<br>
 
-###  The silent look of the icon 😎 (right in the middle)
-![](images/howExtensionLooks.PNG)
+<div align="center">
+<h3 align="center"> Focused view 🕶 </h3>
+<br>
+<p align="center">
+  <img src ="./images/icon.PNG" width = 500px>
+</p>
+<br>
 
 
-###  Focused view 🕶
-![](images/icon.PNG)
+<div align="center">
+<h3 align="center"> Preview with multiple chrome windows  </h3>
+<br>
+<p align="center">
+  <img src ="./images/listOfLRUs.png" width = 800px>
+</p>
+<br>
 
-
-###  Preview with multiple chrome windows 
-![](images/listOfLRUs.png)
 
 
 ### If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option
