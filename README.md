@@ -1,6 +1,28 @@
-# Tabsist
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px src="./assets/logo.png"</a>
+</p>
+<h1 align = 'center'> Tabsist</h1>
 
-## 👥 Mode
+<br>
+
+  
+&emsp;&emsp; [![](https://img.shields.io/badge/Made_with-Flask-blue?style=for-the-badge&logo=Flask)](https://flask.palletsprojects.com/en/1.1.x/)
+[![](https://img.shields.io/badge/Database-MongoDB-red?style=for-the-badge&logo=mongodb)](mongodb.com "MongoDB")
+[![](https://img.shields.io/badge/Made_with-ReactJS-yellow?style=for-the-badge&logo=react)](https://reactjs.org/docs/getting-started.html)
+[![](https://img.shields.io/badge/Made_with-NodeJS-yellow?style=for-the-badge&logo=nodejs)](https://nodejs.org/en/)
+&emsp;&emsp;&emsp;&ensp;&nbsp;[![](https://img.shields.io/badge/Made_with-nltk-green?style=for-the-badge&logo=nltk)](https://www.nltk.org/)
+[![](https://img.shields.io/badge/Made_with-numpy-green?style=for-the-badge&logo=numpy)](https://numpy.org/doc/)
+[![](https://img.shields.io/badge/Made_with-dialogflow-purple?style=for-the-badge&logo=dialogflow)](https://dialogflow.com/)
+[![](https://img.shields.io/badge/Deployment-Android_Studio-purple?style=for-the-badge&logo=java)](https://developer.android.com/studio)
+
+</p>
+<br>
+
+<p align="center">
+  <a href="" rel="noopener">
+</p>
+<h1 align = 'center'> 👥 Mode</h1>
 
   1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
 
@@ -12,7 +34,10 @@
 
   5️⃣  Now select the public folder. 
 
-## 🖱 Mode
+<p align="center">
+  <a href="" rel="noopener">
+</p>
+<h1 align = 'center'> 🖱 Mode</h1>
 
   1️⃣  Clone the repo or Download the Zip file.
 
