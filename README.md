@@ -1,14 +1,19 @@
 # LRU-Extension 
-### (The feature is still in the building phase)
 
-##  To run locally 
-1)  Clone the repo
-2)  run (npm install), to install node-modules
-3)  run (npm run build:extension) first, to create the build
-4)  and then unpack the build in chrome://extensions
+## User Mode
+
+  1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
+
+  2️⃣  Extract the file.
+
+  3️⃣  Head on to [Chrome Extensions](https://chrome://extensions/)
+
+  4️⃣  Click on Load unpacked option
+
+  5️⃣  Now select the public folder. 
 
 
-###  Icon...
+###  
 ![](images/LruIcon.png)
 
 
