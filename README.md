@@ -25,16 +25,19 @@
 <h1 align = 'center'> 👥 Mode</h1>
 
 
-  1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
+  1️⃣   [Link to the zip file](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj), download the file
 
   2️⃣  Extract the file.
 
   3️⃣  Head on to [Chrome Extensions](https://chrome://extensions/)
 
   4️⃣  Click on Load unpacked option
+<p>
+ <img src ="./images/loadUnpacked.PNG" width = 140px>
+</p>
 
   5️⃣  Now select the public folder. 
-
+  
 <p align="center">
   <a href="" rel="noopener">
 </p>
