@@ -95,20 +95,7 @@
 
     
  ------------------------------------------
-### Contributing
 
-
- We're are open to `enhancements` & `bug-fixes` . Open a PR and we'll look into it. 
- 
-------------------------------------------
-### Contributors
-
-- [@Mayank Chowdhary](https://github.com/m607stars)
-- [@Tushar Bapecha](https://github.com/tushargithub44)
-- [@Rugved Bongale](https://github.com/rugvedb)
-- [@Talha Chafekar](https://github.com/talha1503)
-
-   
 ### Contributors
 
 - [@Neeraj Naik](https://github.com/NeerajNaik)
