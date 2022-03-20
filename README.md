@@ -79,7 +79,7 @@
 <br>
 
 
-  <div align="center">
+<div align="center">
 <h3 align="center"> Accessible in each chrome window/chrome tab seperately   </h3>
 <br>
 <p align="center">
@@ -88,9 +88,16 @@
 <br>
   
   
-  
 ###             Tech stack
 `Backend` : Javascript <br>
 `Database` : Chrome Local Storage <br>
 `Frontend` : ReactJS , CSS , HTML , Javascript  <br>
 
+    
+   
+### Contributors
+
+- [@Neeraj Naik](https://github.com/NeerajNaik)
+- [@Vatsal Pathak](https://github.com/vatsal003)
+- [@Sanmit Sahu](https://github.com/sanmitsahu)
+- [@Vinit Mundra](https://github.com/vmundra)
