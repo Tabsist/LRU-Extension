@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px src="./assets/logo.png"</a>
+ <img width=200px src="./images/tabsistIcon.png.jpg"</a>
 </p>
 <h1 align = 'center'> Tabsist</h1>
 
