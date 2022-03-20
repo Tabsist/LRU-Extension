@@ -234,7 +234,9 @@ function App() {
    
     chrome.storage.sync.get("set",(obj)=>{
       if(obj.set){
-        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE",mode:"LOADING_EXTENSION"})
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE",mode:"LOADING_EXTENSION"},(res)=>{
+          console.log(res)
+        })
       }
       else{
         console.log("Not working set in content script")
@@ -284,26 +286,14 @@ function App() {
           storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
         }
       }
-      // else{
-      //   storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
-      // }
+
     })
       
   
 
 });
+return true
 }
-// else if(msgObj.type === "FROM_POPUP_FALSE"){
-//   console.log("DONT_SHOW")
-
-//     chrome.storage.local.set({"lru":{}}, function() { 
-//       console.log("LRU List Emptied")
-//     })
-  
-
-//   const maindiv = h.getElementById("mainDiv")
-//   maindiv.style.display = "none"
-// }
 });
   },[])
 
@@ -363,9 +353,8 @@ function App() {
     console.log(event.currentTarget.id,chrome.runtime.id)
     const ids = (event.currentTarget.id).split(":")
     if(chrome.runtime.id == undefined) return;
-    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]},()=>{
-      console.log("GGGGGG")
-      
+    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]},(res)=>{
+      console.log(res)
     })
 
   }

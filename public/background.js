@@ -72,12 +72,16 @@ chrome.runtime.onMessage.addListener((obj)=>{
                             }
                         })
                         console.log("tabs",tabs[0])
-                        chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId});
-                        chrome.webNavigation.onBeforeNavigate.addListener((details)=>{
-                            console.log("Before Navigating",details)
-                          })
+                        chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId},(res)=>{
+                            console.log(res)
+
+                        });
+                        // chrome.webNavigation.onBeforeNavigate.addListener((details)=>{
+                        //     console.log("Before Navigating",details)
+                        //   })
                     })
             })
+            return true
     }
     else if(obj.type === "ACTIVATE_TAB" ){
         console.log("BG",obj.tabId,chrome.runtime.id)
@@ -103,6 +107,7 @@ chrome.runtime.onMessage.addListener((obj)=>{
     else{
 
         console.log("INSIDE BACKGROUND when False")
+        return true
     }
 })
 

@@ -219,7 +219,9 @@ btnId.addEventListener("click",()=>{
     else{
         chrome.storage.sync.set({ "set":true }, () => { 
           btnId.style.backgroundColor = "green"
-          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"});
+          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"},(res)=>{
+            console.log(res)
+          });
         })
     }
 
