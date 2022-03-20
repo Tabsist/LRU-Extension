@@ -52,7 +52,6 @@
 </p>
 <br>
 
-<div align="center">
 <h3 align="center"> Focused view 🕶 </h3>
 <br>
 <p align="center">
@@ -61,7 +60,6 @@
 <br>
 
 
-<div align="center">
 <h3 align="center"> Preview with multiple chrome windows  </h3>
 <br>
 <p align="center">
@@ -70,7 +68,6 @@
 <br>
 
 
-<div align="center">
 <h3 align="center"> If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option  </h3>
 <br>
 <p align="center">
@@ -79,14 +76,13 @@
 <br>
 
 
-<div align="center">
 <h3 align="center"> Accessible in each chrome window/chrome tab seperately   </h3>
 <br>
 <p align="center">
   <img src ="./images/detailListOfLRUs.png" width = 800px>
 </p>
 <br>
-  
+</div>  
   
 ###             Tech stack
 `Backend` : Javascript <br>
