@@ -70,9 +70,27 @@
 <br>
 
 
+<div align="center">
+<h3 align="center"> If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option  </h3>
+<br>
+<p align="center">
+  <img src ="./images/canSlidTheIcon.png" width = 800px>
+</p>
+<br>
 
-### If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option
-![](images/canSlidTheIcon.png)
 
-###  Accessible in each chrome window/chrome tab seperately 
-![](images/detailListOfLRUs.png)
+  <div align="center">
+<h3 align="center"> Accessible in each chrome window/chrome tab seperately   </h3>
+<br>
+<p align="center">
+  <img src ="./images/detailListOfLRUs.png" width = 800px>
+</p>
+<br>
+  
+  
+  
+###             Tech stack
+`Backend` : Javascript <br>
+`Database` : Chrome Local Storage <br>
+`Frontend` : ReactJS , CSS , HTML , Javascript  <br>
+
