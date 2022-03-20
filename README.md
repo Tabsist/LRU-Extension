@@ -21,8 +21,9 @@
 ![](images/icon.PNG)
 
 
-###  This is what it looks like exactly
-![](images/listOfLrus.png)
+###  Preview with multiple chrome windows 
+![](images/listOfLRUs.png)
 
-###  Toggle the feature
-![](images/ToggleButton.png)
+
+###  Accessible in each chrome window/chrome tab seperately
+![](images/detailListOfLRUs.png)
