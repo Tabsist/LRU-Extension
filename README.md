@@ -33,7 +33,7 @@
 
 
 ### If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option
-
+![](images/canSlidTheIcon.png)
 
 ###  Accessible in each chrome window/chrome tab seperately
 ![](images/detailListOfLRUs.png)
