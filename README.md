@@ -24,7 +24,7 @@
 ![](images/howExtensionLooks.PNG)
 
 
-###  Focused view
+###  Focused view 🕶
 ![](images/icon.PNG)
 
 
@@ -35,5 +35,5 @@
 ### If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option
 ![](images/canSlidTheIcon.png)
 
-###  Accessible in each chrome window/chrome tab seperately
+###  Accessible in each chrome window/chrome tab seperately 
 ![](images/detailListOfLRUs.png)
