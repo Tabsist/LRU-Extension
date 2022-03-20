@@ -1,6 +1,6 @@
 # Tabsist
 
-## 👥 User Mode
+## 👥 Mode
 
   1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
 
@@ -12,7 +12,7 @@
 
   5️⃣  Now select the public folder. 
 
-## 🖱 Developer Mode
+## 🖱 Mode
 
   1️⃣  Clone the repo or Download the Zip file.
 
