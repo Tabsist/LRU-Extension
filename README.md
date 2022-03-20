@@ -24,6 +24,7 @@
 </p>
 <h1 align = 'center'> 👥 Mode</h1>
 
+
   1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
 
   2️⃣  Extract the file.
@@ -42,6 +43,13 @@
   1️⃣  Clone the repo or Download the Zip file.
 
   2️⃣  Run [npm](https://www.npmjs.com/) install
+  
+  3️⃣  In your code-editor type the command
+  
+```
+      npm run dev
+      
+```
 
 
 <div align="center">
