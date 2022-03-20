@@ -13,12 +13,12 @@
   5️⃣  Now select the public folder. 
 
 
-###  
-![](images/LruIcon.png)
+###  The silent look of the icon 😎 (right in the middle)
+![](images/howExtensionLooks.PNG)
 
 
-###  Preview of the recently visited/opened tabs by the user
-![](images/LruWorkingModel.png)
+###  Focused view
+![](images/icon.PNG)
 
 
 ###  This is what it looks like exactly
