@@ -1,6 +1,6 @@
 # Tabsist
 
-## User Mode
+## 👥 User Mode
 
   1️⃣  Download the Zip file from [this link](https://drive.google.com/drive/folders/1uK1-mVNfMkriH31m-cmoHFWvg1O69vzj)
 
@@ -11,6 +11,13 @@
   4️⃣  Click on Load unpacked option
 
   5️⃣  Now select the public folder. 
+
+## 🖱 Developer Mode
+
+  1️⃣  Clone the repo or Download the Zip file.
+
+  2️⃣  Run [npm](https://www.npmjs.com/) install
+
 
 
 ###  The silent look of the icon 😎 (right in the middle)
@@ -23,6 +30,9 @@
 
 ###  Preview with multiple chrome windows 
 ![](images/listOfLRUs.png)
+
+
+### If center is not comfortable position for the icon, sliding it ⏮ ⏭ is an option
 
 
 ###  Accessible in each chrome window/chrome tab seperately
