@@ -8,27 +8,31 @@ const createElements = ()=>{
   
   i.classList.add("fa","fa-window-close")
   i.addEventListener("click",function(){
-    chrome.storage.local.get("lru",(items)=>{
-      var allKeys = Object.keys(items.lru);
-      const obj = items.lru
-      console.log(items.lru.size)
-      const removedDomainLink = this.parentNode.firstElementChild.value
-      for(let j=0;j<allKeys.length;j++){
-        if(allKeys[j].includes(removedDomainLink))
-        {
-          console.log("in i tag",obj[allKeys[j]])
-          delete obj[allKeys[j]]
-        }    
-      }
-      chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
-        console.log("LRU List Emptied",returnedObj)
-        // chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
-        
-      })
-      this.parentNode.remove()
+    deleteDomain(this)
+    // chrome.storage.local.get("lru",async(items)=>{
+    //   let domainli = await getDomainList()
+    //   var allKeys = Object.keys(items.lru);
+    //   const obj = items.lru
+    //   console.log(items.lru.size)
+    //   const removedDomainLink = this.parentNode.firstElementChild.value
+    //   let filteredDomainLi = domainli.filter(e=>e!=removedDomainLink)
+    //   console.log(filteredDomainLi)
+    //   saveDomainList(filteredDomainLi,"* Deleted Successfully")
+    //   for(let j=0;j<allKeys.length;j++){
+    //     if(allKeys[j].includes(removedDomainLink))
+    //     {
+    //       console.log("in i tag",obj[allKeys[j]])
+    //       delete obj[allKeys[j]]
+    //     }    
+    //   }
+    //   chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
+    //     console.log("LRU List Emptied",returnedObj)      
+    //   })
+    //   this.parentNode.remove()
       
-      allKeys = []
-    })
+    //   allKeys = []
+    // })
+    // this.parentNode.remove()
     
   })
   
@@ -42,6 +46,82 @@ const createElements = ()=>{
 const domain = document.getElementById("domain")
 const hidden = document.getElementById("hidden")
 
+//saving Domain List
+const saveDomainList = (arr,txt)=>{
+  let success = document.getElementById("success")
+  chrome.storage.sync.set({ "domainList":arr }, (savedObj) => { 
+    console.log(arr)
+    if(arr.length == 0){
+      unfilter()
+    }
+    else{
+      console.log("Saved Domains")
+      chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
+        console.log(res)
+      }).catch((err)=>console.log(err));
+    } 
+    success.innerText = txt
+    success.style.color  = "lightseagreen" 
+    success.style.display = "block"
+    setTimeout(()=>{
+      success.style.display = "none"
+    },3000)
+    })
+}
+
+//LRU without filtering
+const unfilter = ()=>{
+  hidden.style.display = "none"
+  domain.checked = false
+  chrome.storage.sync.set({ "checkbox":false }, () => { 
+    console.log("unchecked")
+    chrome.storage.sync.set({ "domainList": [] }, () => { 
+      console.log("Emptied Domains")
+      const li = hidden.getElementsByTagName("p")
+      console.log(li)
+      const x = li.length
+      for(j=x-1;j>=0;j--){
+        console.log(li[j])
+        li[j].remove()
+      }
+      chrome.storage.local.set({"lru":{}}, function() { 
+        console.log("LRU List Emptied")
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
+          console.log(res)
+        }).catch((err)=>console.log(err));
+      })
+    })
+})
+}
+
+//delete domain
+const deleteDomain = (crossTag)=>{
+  chrome.storage.local.get("lru",async(items)=>{
+    var allKeys = Object.keys(items.lru);
+    let domainli = await getDomainList()
+    const obj = items.lru
+    console.log(items.lru.size)
+    const removedDomainLink = crossTag.parentNode.firstElementChild.value
+    let filteredDomainLi = domainli.filter(e=>e!=removedDomainLink)
+    console.log(filteredDomainLi)
+    saveDomainList(filteredDomainLi,"* Deleted Successfully")
+    for(let j=0;j<allKeys.length;j++){
+      if(allKeys[j].includes(removedDomainLink))
+      {
+        console.log("in i tag",obj[allKeys[j]])
+        delete obj[allKeys[j]]
+      }    
+    }
+    chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
+      console.log("LRU Changed",returnedObj)
+      
+    })
+    crossTag.parentNode.remove()
+    
+    allKeys = []
+  })
+}
+
 const domainCheck = ()=>{
   if(domain.checked){
     hidden.style.display = "block"
@@ -51,26 +131,7 @@ const domainCheck = ()=>{
     })
   }
   else{
-    hidden.style.display = "none"
-    chrome.storage.sync.set({ "checkbox":false }, () => { 
-      console.log("unchecked")
-      chrome.storage.sync.set({ "domainList": [] }, () => { 
-        console.log("Emptied Domains")
-        const li = hidden.getElementsByTagName("p")
-        console.log(li)
-        const x = li.length
-        for(j=x-1;j>=0;j--){
-          console.log(li[j])
-          li[j].remove()
-        }
-        chrome.storage.local.set({"lru":{}}, function() { 
-          console.log("LRU List Emptied")
-          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
-            console.log(res)
-          }).catch((err)=>console.log(err));
-        })
-      })
-  })
+    unfilter()
   }
 
 
@@ -111,26 +172,7 @@ domain.addEventListener("click",()=>{
 
 //for the first p tag(first domain)
 document.getElementsByTagName("i")[0].addEventListener("click",function(){
-  chrome.storage.local.get("lru",(items)=>{
-    var allKeys = Object.keys(items.lru);
-    const obj = items.lru
-    console.log(items.lru.size)
-    const removedDomainLink = this.parentNode.firstElementChild.value
-    for(let j=0;j<allKeys.length;j++){
-      if(allKeys[j].includes(removedDomainLink))
-      {
-        console.log("in i tag",obj[allKeys[j]])
-        delete obj[allKeys[j]]
-      }    
-    }
-    chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
-      console.log("LRU Changed",returnedObj)
-      
-    })
-    this.parentNode.remove()
-    
-    allKeys = []
-  })
+    deleteDomain(this)
   })
 //for adding remaining p tags(remaining domains)  
 const addBtn = document.getElementById("addBtn")
@@ -244,20 +286,7 @@ const saveBtn = document.getElementById("saveBtn")
         if(obj){
           if(obj.domainList){
               if(!equalsFn(obj.domainList,arr))
-              chrome.storage.sync.set({ "domainList":arr }, () => { 
-                console.log("Saved Domains")
-
-                chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
-                  console.log(res)
-                }).catch((err)=>console.log(err));
-
-                success.innerText = "*Saved Successfully!"
-                success.style.color  = "lightseagreen" 
-                success.style.display = "block"
-                setTimeout(()=>{
-                  success.style.display = "none"
-                },3000)
-                })
+                saveDomainList(arr,"* Saved Successfully")
               }
             }
           })
@@ -279,7 +308,7 @@ chrome.storage.sync.get("set",(obj)=>{
   }
 })
 
-
+//SET LRU Button
 btnId.addEventListener("click",()=>{
   chrome.storage.sync.get("set",(obj)=>{
     if(obj.set){
