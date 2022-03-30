@@ -7,12 +7,12 @@ import "jquery-ui-dist/jquery-ui"
 import './App.css';
  
 const threeDots = {
-    width: "45px",
-    height: "45px",
+    width: "35px",
+    height: "35px",
     borderImage: "none",
     border: "1px solid lightseagreen",
     borderRadius: "39%",
-    top: "60%",
+    top: "93.5%",
     position: "fixed",
     marginLeft: "50vw",
     cursor:"pointer",
