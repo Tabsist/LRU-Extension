@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener((obj)=>{
 
                     chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,                        
                     function(dataurl){
-                        console.log("POPup",dataurl)
+                        // console.log("POPup",dataurl)
                         console.log("tabs",tabs)
                         console.log(tabs[0].windowId,tabs[0].id)
                         chrome.windows.onRemoved.addListener((windowId)=>{ 

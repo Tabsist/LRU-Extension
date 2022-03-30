@@ -47,6 +47,7 @@ const domainCheck = ()=>{
     hidden.style.display = "block"
     chrome.storage.sync.set({ "checkbox":true }, () => { 
         console.log("checked")
+        chrome.storage.sync.set({ "domainList": [] }, () => { })
     })
   }
   else{
@@ -62,13 +63,14 @@ const domainCheck = ()=>{
           console.log(li[j])
           li[j].remove()
         }
+        chrome.storage.local.set({"lru":{}}, function() { 
+          console.log("LRU List Emptied")
+          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+        })
       })
   })
   }
-  chrome.storage.local.set({"lru":{}}, function() { 
-    console.log("LRU List Emptied")
-    chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
-  })
+
 
 }
 
@@ -144,16 +146,73 @@ const validateDomain = (domainName)=>{
   return false
 }
 
+const check = (x)=>{
+  return new Promise((resolve,reject)=>{
+    chrome.storage.sync.get("domainList", (obj) => { 
+      if(obj && obj.domainList){
+        if(obj.domainList.includes(x)){
+          resolve(false)
+        }
+        else{
+          resolve(true)
+        }
+      }
+    })
+  })
+             
+}
+
+//returns the domainList
+const getDomainList = ()=>{
+  return new Promise((resolve,reject)=>{
+    chrome.storage.sync.get("domainList", (obj) => { 
+      resolve(obj.domainList)
+    })
+  })
+             
+}
+
+//checks if arrays are equal or not
+const equalsFn = (a, b) =>
+  a.length === b.length &&
+  a.every((v, i) => v === b[i]);
+
 //for saving Domains
 const saveBtn = document.getElementById("saveBtn")
   saveBtn.addEventListener("click",()=>{
-    li = hidden.getElementsByTagName("input")
+    chrome.storage.local.get("lru",async(items)=>{
+    let li = hidden.getElementsByTagName("input")
     const arr = []
+    const temp = await getDomainList()
+    let objItems = items.lru
     let flag = -1
     for(i=0;i<li.length;i++){
+      if(li[i]){
       if(li[i].value != ""){
         let x = li[i].value.split("/")
+        var allKeys = Object.keys(objItems);
         if(validateDomain(x)){
+          let t = await check(li[i].value) 
+          console.log(t)
+          if(t){
+          console.log(li[i].value)
+            
+            const removedDomainLink = li[i].value
+            for(let j=0;j<allKeys.length;j++){
+              if(!allKeys[j].includes(removedDomainLink))
+              {
+                console.log(temp)
+                
+                if(!temp.some((e)=>allKeys[j].includes(e))){
+                  console.log("in i tag",objItems[allKeys[j]])
+                  delete objItems[allKeys[j]]
+                }
+
+              }    
+            }
+            // allKeys = []
+          }
+
           arr.push(li[i].value)
         }
         else{
@@ -162,6 +221,12 @@ const saveBtn = document.getElementById("saveBtn")
         }
       }
     }
+    }
+    
+    chrome.storage.local.set({"lru":objItems}, function(returnedObj) { 
+      console.log("LRU List Emptied",returnedObj)
+      
+    })
     let success = document.getElementById("success")
     if(flag>-1){
       success.innerText = "Domain: "+flag+" is Incorrect!"
@@ -172,21 +237,28 @@ const saveBtn = document.getElementById("saveBtn")
       },3000)
     }  
     else{
-    chrome.storage.sync.set({ "domainList":arr }, () => { 
-      console.log("Saved Domains")
-      // chrome.storage.local.set({"lru":{}}, function() { 
-      //   console.log("LRU List Emptied")
-      chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
-      // })
-      // let success = document.getElementById("success")
-      success.innerText = "*Saved Successfully!"
-      success.style.color  = "lightseagreen" 
-      success.style.display = "block"
-      setTimeout(()=>{
-        success.style.display = "none"
-      },3000)
-    })
+      chrome.storage.sync.get("domainList", (obj) => { 
+        console.log("Domainlist",obj)
+        if(obj){
+          if(obj.domainList){
+              if(!equalsFn(obj.domainList,arr))
+              chrome.storage.sync.set({ "domainList":arr }, () => { 
+                console.log("Saved Domains")
+
+                chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+
+                success.innerText = "*Saved Successfully!"
+                success.style.color  = "lightseagreen" 
+                success.style.display = "block"
+                setTimeout(()=>{
+                  success.style.display = "none"
+                },3000)
+                })
+              }
+            }
+          })
     }
+  })
   })
   
 
