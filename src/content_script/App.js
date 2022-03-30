@@ -101,12 +101,6 @@ function App() {
   // const h= document.getElementById("insertion-point").firstChild.shadowRoot
   const [url, seturl] = useState([])
   const [mouseMove, setmouseMove] = useState(false)
-  // $(window).bind("beforeunload", function() { 
-  //   chrome.storage.local.set({"lru":{}}, function() { 
-  //     console.log("LRU List Emptied")
-  //     // chrome.runtime.sendMessage({type:"FROM_POPUP_FALSE"});
-  //   })
-  // })
 
   const displayURL = (h)=>{
     chrome.storage.local.get("lru", function(items) {
@@ -234,9 +228,9 @@ function App() {
    
     chrome.storage.sync.get("set",(obj)=>{
       if(obj.set){
-        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE",mode:"LOADING_EXTENSION"},(res)=>{
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE",mode:"LOADING_EXTENSION"}).then((res)=>{
           console.log(res)
-        })
+        }).catch((err)=>console.log(err));
       }
       else{
         console.log("Not working set in content script")
@@ -246,10 +240,6 @@ function App() {
       console.log("In ContentScript",msgObj)
     if(msgObj.type === "FROM_BACKGROUND_TRUE")
     {  
-      //if localStorage.get checked:true then lru empty
-      //check if domain list is present
-      //check if current url(x) is in domain list
-      //If yes then store in lru else dont store it 
       console.log(window.location.origin)
 
     chrome.storage.local.get("lru",(obj)=>{
@@ -292,8 +282,9 @@ function App() {
   
 
 });
-return true
+// return true
 }
+return new Promise((resolve,reject)=>resolve("success from Content"))
 });
   },[])
 
@@ -353,9 +344,9 @@ return true
     console.log(event.currentTarget.id,chrome.runtime.id)
     const ids = (event.currentTarget.id).split(":")
     if(chrome.runtime.id == undefined) return;
-    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]},(res)=>{
+    chrome.runtime.sendMessage({type:"ACTIVATE_TAB",tabId:ids[0],windowId:ids[1]}).then((res)=>{
       console.log(res)
-    })
+    }).catch((err)=>console.log(err));
 
   }
   return (

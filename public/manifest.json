@@ -18,6 +18,6 @@
   "action": {
     "default_popup": "./popup.html"
   },
-  "permissions": ["storage","tabs","activeTab","contextMenus","webNavigation"],
+  "permissions": ["storage","tabs","activeTab","contextMenus"],
   "host_permissions":["<all_urls>"]
 }

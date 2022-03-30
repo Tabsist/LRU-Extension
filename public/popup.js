@@ -65,7 +65,9 @@ const domainCheck = ()=>{
         }
         chrome.storage.local.set({"lru":{}}, function() { 
           console.log("LRU List Emptied")
-          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
+            console.log(res)
+          }).catch((err)=>console.log(err));
         })
       })
   })
@@ -122,7 +124,7 @@ document.getElementsByTagName("i")[0].addEventListener("click",function(){
       }    
     }
     chrome.storage.local.set({"lru":obj}, function(returnedObj) { 
-      console.log("LRU List Emptied",returnedObj)
+      console.log("LRU Changed",returnedObj)
       
     })
     this.parentNode.remove()
@@ -245,7 +247,9 @@ const saveBtn = document.getElementById("saveBtn")
               chrome.storage.sync.set({ "domainList":arr }, () => { 
                 console.log("Saved Domains")
 
-                chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"})
+                chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
+                  console.log(res)
+                }).catch((err)=>console.log(err));
 
                 success.innerText = "*Saved Successfully!"
                 success.style.color  = "lightseagreen" 
@@ -291,9 +295,9 @@ btnId.addEventListener("click",()=>{
     else{
         chrome.storage.sync.set({ "set":true }, () => { 
           btnId.style.backgroundColor = "green"
-          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"},(res)=>{
+          chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
             console.log(res)
-          });
+          }).catch((err)=>console.log(err));
         })
     }
 
