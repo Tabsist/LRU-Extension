@@ -38,10 +38,10 @@
                     /* background-color: #12395d; */
         }
         }
-        .filterBtns:focus {
+        .filterBtns:focus,.filterBtns2:focus {
           animation: beat 0.2s ease-in-out backwards;
         }
-        .filterBtns:active{
+        .filterBtns:active,.filterBtns2:active{
             animation: none;
         }
         #labelLRU{
@@ -85,6 +85,17 @@
             filter: drop-shadow(2px 2px 1px #7db0de);
             cursor: pointer;
         }
+        .filterBtns2{
+            background: #12395d;
+            color: #7db0de;
+            border-radius: 5%;
+            width: 110px;
+            height: 34px;
+            border: none;
+            filter: drop-shadow(2px 2px 1px #7db0de);
+            cursor: pointer;
+            margin-top: 1px;
+        }
         #filter{   
             font-size: medium;
             font-weight: 700;
@@ -123,7 +134,7 @@
     <input type="checkbox" name="addPersonalCheck" id="addPersonalCheck">
     <label for="html" id="addpersonalLRU">Add Personal Lru</label>
     <div id="hidden2">
-        <button id="addPersonal">Add Current Tab</button> 
+        <button id="addPersonal" class="filterBtns2">Add Current Tab</button> 
     </div>
     <button id="btnId">Set LRU</button> 
     <script src="./popup.js"></script>

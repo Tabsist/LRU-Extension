@@ -247,7 +247,9 @@ function App() {
         chrome.storage.sync.get("addPersonalCheckbox", (addPersonalObj) => {
           if(msgObj.mode == "ADD_PERSONAL_LRU"){
                 console.log("HI PERSONAL")
-                storeLRU(msgObj.dataurl,obj,currentTimeInSeconds,msgObj,msgObj.title,h)
+                let cts = Math.floor(Date.now()/1000); 
+                console.log("CTSS",cts)
+                storeLRU(msgObj.dataurl,obj,cts,msgObj,msgObj.title,h)
               
               console.log("add Personal LRU")
           }
@@ -287,7 +289,7 @@ function App() {
             // }
             else{
               console.log("sasdasd",addPersonalObj)
-              console.log("UNCHECKED",checkboxObj.checkbox,addPersonalObj,addPersonalObj.addPersonalCheckbox)
+              console.log("UNCHECKED1",checkboxObj.checkbox,addPersonalObj,addPersonalObj.addPersonalCheckbox)
               storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
             }
           }

@@ -16,6 +16,9 @@ const addPersonalLRU = ()=>{
       hidden2.style.visibility = "hidden"
       chrome.storage.local.set({"lru":{}}, function() { 
         console.log("LRU List Emptied")
+        chrome.runtime.sendMessage({type:"FROM_CONTENT_TRUE"}).then((res)=>{
+          console.log(res)
+        }).catch((err)=>console.log(err));
       })
       // addPersonalCheck.checked = false
       // chrome.storage.sync.set({ "domainList": [] }, () => { })
