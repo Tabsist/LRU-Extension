@@ -47,33 +47,38 @@ chrome.runtime.onMessage.addListener((obj)=>{
 
                 })
             }  
-            chrome.tabs.query( {
-                // gets the window the user can currently see
-                active: true, 
-                currentWindow: true 
-                },function(tabs){
-                        chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,                        
-                        function(dataurl){
-                            console.log("tabs",tabs)
-                            console.log(tabs[0].windowId,tabs[0].id)
-                            chrome.windows.onRemoved.addListener((windowId)=>{ 
-                                if(windowId === tabs[0].windowId){
-                                    console.log("windowDeleted",windowId)
-                                    deleteItem(windowId,5)
-                                }
-                            })
-                            chrome.tabs.onRemoved.addListener(function(tabId){
-                                if(tabId === tabs[0].id){
-                                    console.log("tabDeleted",tabId)
-                                    deleteItem(tabId,4)
-                                }
-                            })
-                            console.log("tabs",tabs[0])
-                            chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId}).then((res)=>{
-                                console.log(res)
-                              }).catch((err)=>console.log(err));
+            chrome.storage.sync.get("addPersonalCheckbox", (addPersonalObj) => {
+                if(addPersonalObj && !addPersonalObj.addPersonalCheckbox){
+                    chrome.tabs.query( {
+                        // gets the window the user can currently see
+                        active: true, 
+                        currentWindow: true 
+                        },function(tabs){
+                                chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,                        
+                                function(dataurl){
+                                    console.log("tabs",tabs)
+                                    console.log(tabs[0].windowId,tabs[0].id)
+                                    chrome.windows.onRemoved.addListener((windowId)=>{ 
+                                        if(windowId === tabs[0].windowId){
+                                            console.log("windowDeleted",windowId)
+                                            deleteItem(windowId,5)
+                                        }
+                                    })
+                                    chrome.tabs.onRemoved.addListener(function(tabId){
+                                        if(tabId === tabs[0].id){
+                                            console.log("tabDeleted",tabId)
+                                            deleteItem(tabId,4)
+                                        }
+                                    })
+                                    console.log("tabs",tabs[0])
+                                    chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",dataurl:dataurl,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId}).then((res)=>{
+                                        console.log(res)
+                                      }).catch((err)=>console.log(err));
+                                })
                         })
-                })
+                }
+            })
+
             // return true
         }
         else if(obj.type === "ACTIVATE_TAB" ){
@@ -88,6 +93,30 @@ chrome.runtime.onMessage.addListener((obj)=>{
             })    
             // return true
             
+        }
+        else if(obj.type === "FROM_POPUP_PERSONAL"){
+            console.log("From popup")
+            chrome.tabs.query({active: true}, function(tabs){
+                // console.log(tabs[0]);
+                chrome.tabs.captureVisibleTab(chrome.windows.WINDOW_ID_CURRENT,                        
+                    function(dataurl){
+                        chrome.windows.onRemoved.addListener((windowId)=>{ 
+                            if(windowId === tabs[0].windowId){
+                                console.log("windowDeleted",windowId)
+                                deleteItem(windowId,5)
+                            }
+                        })
+                        chrome.tabs.onRemoved.addListener(function(tabId){
+                            if(tabId === tabs[0].id){
+                                console.log("tabDeleted",tabId)
+                                deleteItem(tabId,4)
+                            }
+                        })
+                chrome.tabs.sendMessage(tabs[0].id,{type:"FROM_BACKGROUND_TRUE",mode:"ADD_PERSONAL_LRU",url:tabs[0].url,dataurl:dataurl,title:tabs[0].title,iconurl:tabs[0].favIconUrl,tabId:tabs[0].id,windowId:tabs[0].windowId}).then((res)=>{
+                  console.log(res)
+                }).catch((err)=>console.log(err));
+            })
+            });
         }
         else{
 

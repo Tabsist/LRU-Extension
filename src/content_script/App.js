@@ -105,7 +105,6 @@ function App() {
   const displayURL = (h)=>{
     chrome.storage.local.get("lru", function(items) {
       var pairs=[]
-     
       var allKeys = Object.keys(items.lru);
       console.log(allKeys);
       console.log(items.lru);
@@ -245,37 +244,55 @@ function App() {
     chrome.storage.local.get("lru",(obj)=>{
       console.log("OBJECT",obj)
       chrome.storage.sync.get("checkbox", (checkboxObj) => {  
-      if(checkboxObj){
-        if(checkboxObj.checkbox){
-          let k=0
-          console.log("CHECKED")
-          chrome.storage.sync.get("domainList", (domainListObj) => {
-            const domainli = domainListObj.domainList
-            console.log(domainli)
-            if(domainli.length>0){
-              while(k<domainli.length){
-                if(domainli[k].includes(window.location.origin)){
-                  console.log("hi dom",domainli[k],x)
-                  storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
-                  break
+        chrome.storage.sync.get("addPersonalCheckbox", (addPersonalObj) => {
+          if(msgObj.mode == "ADD_PERSONAL_LRU"){
+                console.log("HI PERSONAL")
+                storeLRU(msgObj.dataurl,obj,currentTimeInSeconds,msgObj,msgObj.title,h)
+              
+              console.log("add Personal LRU")
+          }
+          else{
+          if(checkboxObj){
+            if(checkboxObj.checkbox){
+              let k=0
+              console.log("CHECKED")
+              chrome.storage.sync.get("domainList", (domainListObj) => {
+                const domainli = domainListObj.domainList
+                console.log(domainli)
+                if(domainli.length>0){
+                  while(k<domainli.length){
+                    if(domainli[k].includes(window.location.origin)){
+                      console.log("hi dom",domainli[k],x)
+                      storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
+                      break
+                    }
+                    k+=1
+                  }
+                  if(k==domainli.length){
+                    displayURL(h)
+                  }
                 }
-                k+=1
-              }
-              if(k==domainli.length){
-                displayURL(h)
-              }
+                else{
+                  console.log("hi zero")
+                  seturl([])
+                }
+              })  
             }
+            // else if(addPersonalObj && addPersonalObj.addPersonalCheckbox){
+            //   if(msgObj.mode == "ADD_PERSONAL_LRU"){
+            //     console.log("HI PERSONAL")
+            //     storeLRU(msgObj.dataurl,obj,currentTimeInSeconds,msgObj,msgObj.title,h)
+            //   }
+            //   console.log("add Personal LRU")
+            // }
             else{
-              console.log("hi zero")
-              seturl([])
+              console.log("sasdasd",addPersonalObj)
+              console.log("UNCHECKED",checkboxObj.checkbox,addPersonalObj,addPersonalObj.addPersonalCheckbox)
+              storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
             }
-          })  
+          }
         }
-        else{
-          console.log("UNCHECKED",checkboxObj.checkbox)
-          storeLRU(x,obj,currentTimeInSeconds,msgObj,document.title,h)
-        }
-      }
+        })
 
     })
       

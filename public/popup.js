@@ -1,3 +1,37 @@
+const addPersonalCheck = document.getElementById("addPersonalCheck")
+const hidden2 = document.getElementById("hidden2")
+const addPersonalLRU = ()=>{
+  if(addPersonalCheck.checked){
+    hidden2.style.visibility = "visible"
+    chrome.storage.sync.set({ "addPersonalCheckbox":true }, () => { 
+        console.log("addPersonalCheckbox checked")
+        chrome.storage.local.set({"lru":{}}, function() { 
+          console.log("LRU List Emptied")
+        })
+    })
+  }
+  else{
+    chrome.storage.sync.set({ "addPersonalCheckbox":false }, () => { 
+      console.log("addPersonalCheckbox checked")
+      hidden2.style.visibility = "hidden"
+      chrome.storage.local.set({"lru":{}}, function() { 
+        console.log("LRU List Emptied")
+      })
+      // addPersonalCheck.checked = false
+      // chrome.storage.sync.set({ "domainList": [] }, () => { })
+  })
+  }
+}
+addPersonalCheck.addEventListener("click",()=>{
+  addPersonalLRU()
+})
+
+document.getElementById("addPersonal").addEventListener("click",()=>{
+  chrome.runtime.sendMessage({type:"FROM_POPUP_PERSONAL"}).then((res)=>{
+    console.log(res)
+  }).catch((err)=>console.log(err));
+
+})
 //Creating Input Elements to take in domain
 const createElements = ()=>{
   const p = document.createElement("p")
@@ -136,6 +170,22 @@ const domainCheck = ()=>{
 
 
 }
+chrome.storage.sync.get("addPersonalCheckbox", (obj) => {
+  console.log(obj)
+  if(obj){
+    if(obj.addPersonalCheckbox){
+      hidden2.style.visibility = "visible"
+      addPersonalCheck.checked = true
+    }
+    else{
+      hidden2.style.visibility = "hidden"
+      addPersonalCheck.checked = false
+    }
+  }
+  else{
+    console.log("No obj")
+  }
+ })
 
 chrome.storage.sync.get("checkbox", (obj) => { 
   if(obj){

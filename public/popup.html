@@ -72,6 +72,9 @@
         #hidden{
             display: none;
         }
+        #hidden2{
+            visibility: hidden;
+        }
         .filterBtns{
             background: #12395d;
             color: #7db0de;
@@ -98,6 +101,7 @@
         #success{
             display: none;
         }
+        
     </style>
 </head>
 <body>
@@ -116,7 +120,11 @@
         </div>   
     </div>
     <p id="success"></p>
-
+    <input type="checkbox" name="addPersonalCheck" id="addPersonalCheck">
+    <label for="html" id="addpersonalLRU">Add Personal Lru</label>
+    <div id="hidden2">
+        <button id="addPersonal">Add Current Tab</button> 
+    </div>
     <button id="btnId">Set LRU</button> 
     <script src="./popup.js"></script>
 </body>
